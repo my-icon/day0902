@@ -1,0 +1,480 @@
+<ns0:test-suite xmlns:ns0="urn:model.allure.qatools.yandex.ru" start="1571729116871" stop="1571729140261">
+  <name>test_login2</name>
+  <labels/>
+  <test-cases>
+    <test-case start="1571729116871" status="broken" stop="1571729140097">
+      <name>TestLogin.test_login[itheimama-123456]</name>
+      <failure>
+        <message>WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+</message>
+        <stack-trace>self = &lt;class 'test_login2.TestLogin'&gt;
+
+    def setup_class(self):
+        self.page = PageIn()
+        # 获取PageLogin对象
+        self.login = self.page.page_get_pagelogin()
+        self.order = self.page.page_get_pageorder()
+        # 点击 弹窗
+        self.login.page_close_alert()
+        # 点击 我
+&gt;       self.login.page_click_me()
+
+test_login2.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\page\page_login.py:17: in page_click_me
+    self.base_click(page.login_me)
+..\base\base.py:43: in base_click
+    self.base_find(loc).click()
+..\base\base.py:38: in base_find
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\support\wait.py:71: in until
+    value = method(self._driver)
+..\base\base.py:38: in &lt;lambda&gt;
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:712: in find_element
+    {'using': by, 'value': value})['value']
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:201: in execute
+    self.error_handler.check_response(response)
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:29: in check_response
+    raise wde
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:24: in check_response
+    super(MobileErrorHandler, self).check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x00000000044ED148&gt;
+response = {'sessionId': '74963ce6-1a31-45d0-a2b1-cb1ebccdcb58', 'status': 13, 'value': {'message': 'An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly'}}
+
+    def check_response(self, response):
+        """
+        Checks that a JSON response from the WebDriver does not have an error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get('status', None)
+        if status is None or status == ErrorCode.SUCCESS:
+            return
+    
+        value = None
+        message = response.get("message", "")
+        screen = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get('value', None)
+            if value_json and isinstance(value_json, basestring):
+                import json
+                value = json.loads(value_json)
+                status = value['error']
+                message = value['message']
+    
+        exception_class = ErrorInResponseException
+        if status in ErrorCode.NO_SUCH_ELEMENT:
+            exception_class = NoSuchElementException
+        elif status in ErrorCode.NO_SUCH_FRAME:
+            exception_class = NoSuchFrameException
+        elif status in ErrorCode.NO_SUCH_WINDOW:
+            exception_class = NoSuchWindowException
+        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:
+            exception_class = StaleElementReferenceException
+        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:
+            exception_class = ElementNotVisibleException
+        elif status in ErrorCode.INVALID_ELEMENT_STATE:
+            exception_class = InvalidElementStateException
+        elif status in ErrorCode.INVALID_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:
+            exception_class = InvalidSelectorException
+        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:
+            exception_class = ElementNotSelectableException
+        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:
+            exception_class = WebDriverException
+        elif status in ErrorCode.TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.SCRIPT_TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.UNKNOWN_ERROR:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:
+            exception_class = UnexpectedAlertPresentException
+        elif status in ErrorCode.NO_ALERT_OPEN:
+            exception_class = NoAlertPresentException
+        elif status in ErrorCode.IME_NOT_AVAILABLE:
+            exception_class = ImeNotAvailableException
+        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:
+            exception_class = ImeActivationFailedException
+        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:
+            exception_class = MoveTargetOutOfBoundsException
+        else:
+            exception_class = WebDriverException
+        value = response['value']
+        if isinstance(value, basestring):
+            if exception_class == ErrorInResponseException:
+                raise exception_class(response, value)
+            raise exception_class(value)
+        message = ''
+        if 'message' in value:
+            message = value['message']
+    
+        screen = None
+        if 'screen' in value:
+            screen = value['screen']
+    
+        stacktrace = None
+        if 'stackTrace' in value and value['stackTrace']:
+            stacktrace = []
+            try:
+                for frame in value['stackTrace']:
+                    line = self._value_or_default(frame, 'lineNumber', '')
+                    file = self._value_or_default(frame, 'fileName', '&lt;anonymous&gt;')
+                    if line:
+                        file = "%s:%s" % (file, line)
+                    meth = self._value_or_default(frame, 'methodName', '&lt;anonymous&gt;')
+                    if 'className' in frame:
+                        meth = "%s.%s" % (frame['className'], meth)
+                    msg = "    at %s (%s)"
+                    msg = msg % (meth, file)
+                    stacktrace.append(msg)
+            except TypeError:
+                pass
+        if exception_class == ErrorInResponseException:
+            raise exception_class(response, message)
+        elif exception_class == UnexpectedAlertPresentException and 'alert' in value:
+            raise exception_class(message, screen, stacktrace, value['alert'].get('text'))
+&gt;       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\errorhandler.py:181: WebDriverException</stack-trace>
+      </failure>
+      <attachments/>
+      <labels>
+        <label name="severity" value="normal"/>
+        <label name="thread" value="9936-MainThread"/>
+        <label name="host" value="yy-PC"/>
+        <label name="framework" value="pytest"/>
+        <label name="language" value="cpython3"/>
+      </labels>
+      <steps/>
+    </test-case>
+    <test-case start="1571729140111" status="broken" stop="1571729140187">
+      <name>TestLogin.test_login[itheima-1234567]</name>
+      <failure>
+        <message>WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+</message>
+        <stack-trace>self = &lt;class 'test_login2.TestLogin'&gt;
+
+    def setup_class(self):
+        self.page = PageIn()
+        # 获取PageLogin对象
+        self.login = self.page.page_get_pagelogin()
+        self.order = self.page.page_get_pageorder()
+        # 点击 弹窗
+        self.login.page_close_alert()
+        # 点击 我
+&gt;       self.login.page_click_me()
+
+test_login2.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\page\page_login.py:17: in page_click_me
+    self.base_click(page.login_me)
+..\base\base.py:43: in base_click
+    self.base_find(loc).click()
+..\base\base.py:38: in base_find
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\support\wait.py:71: in until
+    value = method(self._driver)
+..\base\base.py:38: in &lt;lambda&gt;
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:712: in find_element
+    {'using': by, 'value': value})['value']
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:201: in execute
+    self.error_handler.check_response(response)
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:29: in check_response
+    raise wde
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:24: in check_response
+    super(MobileErrorHandler, self).check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x00000000044ED148&gt;
+response = {'sessionId': '74963ce6-1a31-45d0-a2b1-cb1ebccdcb58', 'status': 13, 'value': {'message': 'An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly'}}
+
+    def check_response(self, response):
+        """
+        Checks that a JSON response from the WebDriver does not have an error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get('status', None)
+        if status is None or status == ErrorCode.SUCCESS:
+            return
+    
+        value = None
+        message = response.get("message", "")
+        screen = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get('value', None)
+            if value_json and isinstance(value_json, basestring):
+                import json
+                value = json.loads(value_json)
+                status = value['error']
+                message = value['message']
+    
+        exception_class = ErrorInResponseException
+        if status in ErrorCode.NO_SUCH_ELEMENT:
+            exception_class = NoSuchElementException
+        elif status in ErrorCode.NO_SUCH_FRAME:
+            exception_class = NoSuchFrameException
+        elif status in ErrorCode.NO_SUCH_WINDOW:
+            exception_class = NoSuchWindowException
+        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:
+            exception_class = StaleElementReferenceException
+        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:
+            exception_class = ElementNotVisibleException
+        elif status in ErrorCode.INVALID_ELEMENT_STATE:
+            exception_class = InvalidElementStateException
+        elif status in ErrorCode.INVALID_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:
+            exception_class = InvalidSelectorException
+        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:
+            exception_class = ElementNotSelectableException
+        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:
+            exception_class = WebDriverException
+        elif status in ErrorCode.TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.SCRIPT_TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.UNKNOWN_ERROR:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:
+            exception_class = UnexpectedAlertPresentException
+        elif status in ErrorCode.NO_ALERT_OPEN:
+            exception_class = NoAlertPresentException
+        elif status in ErrorCode.IME_NOT_AVAILABLE:
+            exception_class = ImeNotAvailableException
+        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:
+            exception_class = ImeActivationFailedException
+        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:
+            exception_class = MoveTargetOutOfBoundsException
+        else:
+            exception_class = WebDriverException
+        value = response['value']
+        if isinstance(value, basestring):
+            if exception_class == ErrorInResponseException:
+                raise exception_class(response, value)
+            raise exception_class(value)
+        message = ''
+        if 'message' in value:
+            message = value['message']
+    
+        screen = None
+        if 'screen' in value:
+            screen = value['screen']
+    
+        stacktrace = None
+        if 'stackTrace' in value and value['stackTrace']:
+            stacktrace = []
+            try:
+                for frame in value['stackTrace']:
+                    line = self._value_or_default(frame, 'lineNumber', '')
+                    file = self._value_or_default(frame, 'fileName', '&lt;anonymous&gt;')
+                    if line:
+                        file = "%s:%s" % (file, line)
+                    meth = self._value_or_default(frame, 'methodName', '&lt;anonymous&gt;')
+                    if 'className' in frame:
+                        meth = "%s.%s" % (frame['className'], meth)
+                    msg = "    at %s (%s)"
+                    msg = msg % (meth, file)
+                    stacktrace.append(msg)
+            except TypeError:
+                pass
+        if exception_class == ErrorInResponseException:
+            raise exception_class(response, message)
+        elif exception_class == UnexpectedAlertPresentException and 'alert' in value:
+            raise exception_class(message, screen, stacktrace, value['alert'].get('text'))
+&gt;       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\errorhandler.py:181: WebDriverException</stack-trace>
+      </failure>
+      <attachments/>
+      <labels>
+        <label name="severity" value="normal"/>
+        <label name="thread" value="9936-MainThread"/>
+        <label name="host" value="yy-PC"/>
+        <label name="framework" value="pytest"/>
+        <label name="language" value="cpython3"/>
+      </labels>
+      <steps/>
+    </test-case>
+    <test-case start="1571729140202" status="broken" stop="1571729140261">
+      <name>TestLogin.test_login[itheima-123456]</name>
+      <failure>
+        <message>WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+</message>
+        <stack-trace>self = &lt;class 'test_login2.TestLogin'&gt;
+
+    def setup_class(self):
+        self.page = PageIn()
+        # 获取PageLogin对象
+        self.login = self.page.page_get_pagelogin()
+        self.order = self.page.page_get_pageorder()
+        # 点击 弹窗
+        self.login.page_close_alert()
+        # 点击 我
+&gt;       self.login.page_click_me()
+
+test_login2.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\page\page_login.py:17: in page_click_me
+    self.base_click(page.login_me)
+..\base\base.py:43: in base_click
+    self.base_find(loc).click()
+..\base\base.py:38: in base_find
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\support\wait.py:71: in until
+    value = method(self._driver)
+..\base\base.py:38: in &lt;lambda&gt;
+    poll_frequency=poll).until(lambda x:x.find_element(*loc))
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:712: in find_element
+    {'using': by, 'value': value})['value']
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\webdriver.py:201: in execute
+    self.error_handler.check_response(response)
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:29: in check_response
+    raise wde
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\appium\webdriver\errorhandler.py:24: in check_response
+    super(MobileErrorHandler, self).check_response(response)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;appium.webdriver.errorhandler.MobileErrorHandler object at 0x00000000044ED148&gt;
+response = {'sessionId': '74963ce6-1a31-45d0-a2b1-cb1ebccdcb58', 'status': 13, 'value': {'message': 'An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly'}}
+
+    def check_response(self, response):
+        """
+        Checks that a JSON response from the WebDriver does not have an error.
+    
+        :Args:
+         - response - The JSON response from the WebDriver server as a dictionary
+           object.
+    
+        :Raises: If the response contains an error message.
+        """
+        status = response.get('status', None)
+        if status is None or status == ErrorCode.SUCCESS:
+            return
+    
+        value = None
+        message = response.get("message", "")
+        screen = response.get("screen", "")
+        stacktrace = None
+        if isinstance(status, int):
+            value_json = response.get('value', None)
+            if value_json and isinstance(value_json, basestring):
+                import json
+                value = json.loads(value_json)
+                status = value['error']
+                message = value['message']
+    
+        exception_class = ErrorInResponseException
+        if status in ErrorCode.NO_SUCH_ELEMENT:
+            exception_class = NoSuchElementException
+        elif status in ErrorCode.NO_SUCH_FRAME:
+            exception_class = NoSuchFrameException
+        elif status in ErrorCode.NO_SUCH_WINDOW:
+            exception_class = NoSuchWindowException
+        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:
+            exception_class = StaleElementReferenceException
+        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:
+            exception_class = ElementNotVisibleException
+        elif status in ErrorCode.INVALID_ELEMENT_STATE:
+            exception_class = InvalidElementStateException
+        elif status in ErrorCode.INVALID_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR \
+                or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER:
+            exception_class = InvalidSelectorException
+        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:
+            exception_class = ElementNotSelectableException
+        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:
+            exception_class = WebDriverException
+        elif status in ErrorCode.TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.SCRIPT_TIMEOUT:
+            exception_class = TimeoutException
+        elif status in ErrorCode.UNKNOWN_ERROR:
+            exception_class = WebDriverException
+        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:
+            exception_class = UnexpectedAlertPresentException
+        elif status in ErrorCode.NO_ALERT_OPEN:
+            exception_class = NoAlertPresentException
+        elif status in ErrorCode.IME_NOT_AVAILABLE:
+            exception_class = ImeNotAvailableException
+        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:
+            exception_class = ImeActivationFailedException
+        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:
+            exception_class = MoveTargetOutOfBoundsException
+        else:
+            exception_class = WebDriverException
+        value = response['value']
+        if isinstance(value, basestring):
+            if exception_class == ErrorInResponseException:
+                raise exception_class(response, value)
+            raise exception_class(value)
+        message = ''
+        if 'message' in value:
+            message = value['message']
+    
+        screen = None
+        if 'screen' in value:
+            screen = value['screen']
+    
+        stacktrace = None
+        if 'stackTrace' in value and value['stackTrace']:
+            stacktrace = []
+            try:
+                for frame in value['stackTrace']:
+                    line = self._value_or_default(frame, 'lineNumber', '')
+                    file = self._value_or_default(frame, 'fileName', '&lt;anonymous&gt;')
+                    if line:
+                        file = "%s:%s" % (file, line)
+                    meth = self._value_or_default(frame, 'methodName', '&lt;anonymous&gt;')
+                    if 'className' in frame:
+                        meth = "%s.%s" % (frame['className'], meth)
+                    msg = "    at %s (%s)"
+                    msg = msg % (meth, file)
+                    stacktrace.append(msg)
+            except TypeError:
+                pass
+        if exception_class == ErrorInResponseException:
+            raise exception_class(response, message)
+        elif exception_class == UnexpectedAlertPresentException and 'alert' in value:
+            raise exception_class(message, screen, stacktrace, value['alert'].get('text'))
+&gt;       raise exception_class(message, screen, stacktrace)
+E       selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: UiAUtomator shut down unexpectedly
+
+C:\Users\yy\AppData\Local\Programs\Python\Python37\lib\site-packages\selenium\webdriver\remote\errorhandler.py:181: WebDriverException</stack-trace>
+      </failure>
+      <attachments/>
+      <labels>
+        <label name="severity" value="normal"/>
+        <label name="thread" value="9936-MainThread"/>
+        <label name="host" value="yy-PC"/>
+        <label name="framework" value="pytest"/>
+        <label name="language" value="cpython3"/>
+      </labels>
+      <steps/>
+    </test-case>
+  </test-cases>
+</ns0:test-suite>
